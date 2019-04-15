@@ -1,11 +1,15 @@
 {
-	"dir1":{
+	"dir":"/Users/wanaccess/someDir",
+	"dirSchema":{
+		"dir1":{
+			"sample.txt":"file"
+		},
+		"dir2":{
+			"dir":{},
+			"anothetDir":{},
+			"sample.txt":"file"
+		},
+		"dir3":{},
 		"sample.txt":"file"
-	},
-	"dir2":{
-		"dir":{},
-		"sample.txt":"file"
-	},
-	"dir3":{},
-	"sample.txt":"file"
+	}
 }
