@@ -5,7 +5,6 @@ var jsonFile = "/Users/wanaccess/eclipse-workspace/node_examples/sample.json";
 var directory = "";
 var content = "";
 var missingFiles = [];
-var keywords = [];
 var keywordsResults = [];
 
 fs.readFile(jsonFile,function(err,data){
@@ -20,7 +19,6 @@ fs.readFile(jsonFile,function(err,data){
 	
 	directory = obj["dir"];
 	var contentObj = obj["dirSchema"];
-	keywords = obj["keywords"];
 	
 	resolveDir(contentObj,directory);
 	
@@ -32,23 +30,35 @@ fs.readFile(jsonFile,function(err,data){
 	},3000);
 });
 
-async function resolveDir(jsonDir,dirInput){
+function resolveDir(jsonDir,dirInput){
+	
 	fs.readdir(dirInput,function(err,list){
 		for (var oneFile in jsonDir){
-			if (!list.includes(oneFile)){
+			
+			if (!list){
+				return ;
+			}
+			
+			if (!list.includes(oneFile) && oneFile!="type"){
 				//console.log(path.resolve(dirInput,oneFile));
 				missingFiles.push(path.resolve(dirInput,oneFile));
 			}
-			if ((typeof jsonDir[oneFile])=="object"){
+			
+			if (jsonDir[oneFile]["type"]=="directory"){
 				resolveDir(jsonDir[oneFile],path.resolve(dirInput,oneFile));
 			}
-			else if (jsonDir[oneFile]=="file"){
+			else if (jsonDir[oneFile]["type"]=="file"){
 				var stringIn = "";
 				fs.readFile(path.resolve(dirInput,oneFile),function(error,dataIn){
 					stringIn += dataIn;
-					for (var oneWord of keywords){
-						if (stringIn.includes(oneWord)){
-							keywordsResults.push(oneWord+" is in "+path.resolve(dirInput,oneFile));
+					var keywords = jsonDir[oneFile]["keywords"];
+					
+					for (var oneKeyword of keywords){
+						if (stringIn.includes(oneKeyword)){
+							keywordsResults.push("\""+oneKeyword+"\""+" is in "+path.resolve(dirInput,oneFile));
+						}
+						else {
+							keywordsResults.push("\""+oneKeyword+"\""+" is not in "+path.resolve(dirInput,oneFile));
 						}
 					}
 				});
