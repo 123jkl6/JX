@@ -1,4 +1,6 @@
 {
+	"missingFiles":"./missing_files.txt",
+	"keywordsResults":"./keywords_results.txt",
 	"dir":"/Users/wanaccess/someDir",
 	"dirSchema":{
 		"dir1":{
