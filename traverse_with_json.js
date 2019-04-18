@@ -19,6 +19,8 @@ fs.readFile(jsonFile,function(err,data){
 	
 	directory = obj["dir"];
 	var contentObj = obj["dirSchema"];
+	var missingFilesResultsFile = obj["missingFiles"];
+	var keywordsResultsFile = obj["keywordsResults"];
 	
 	resolveDir(contentObj,directory);
 	
@@ -27,6 +29,34 @@ fs.readFile(jsonFile,function(err,data){
 		console.log(missingFiles);
 		console.log("----------Keywords-----------");
 		console.log(keywordsResults);
+		
+		var missingFilesString = "";
+		var keywordsResultsString = "";
+		
+		for (var oneFile of missingFiles){
+			missingFilesString += oneFile + "\r\n";
+		}
+		
+		for (var oneKeyword of keywordsResults){
+			keywordsResultsString += oneKeyword + "\r\n";
+		}
+		
+		fs.writeFile(missingFilesResultsFile,missingFilesString,function(err){
+			if (err){
+				return console.log(err);
+			}
+			
+			console.log("Write to "+missingFilesResultsFile+" complete. ");
+		});
+		
+		fs.writeFile(keywordsResultsFile,keywordsResultsString,function(err){
+			if (err){
+				return console.log(err);
+			}
+			
+			console.log("Write to "+keywordsResultsFile+" complete. ");
+		});
+		
 	},3000);
 });
 
