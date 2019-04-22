@@ -1,6 +1,5 @@
 {
-	"missingFiles":"./missing_files.txt",
-	"keywordsResults":"./keywords_results.txt",
+	"results":"./results.txt",
 	"dir":"/Users/wanaccess/someDir",
 	"dirSchema":{
 		"dir1":{
