@@ -22,6 +22,7 @@ fs.readFile(jsonFile,function(err,data){
 	directory = obj["dir"];
 	var contentObj = obj["dirSchema"];
 	var resultsFile = obj["results"];
+	var recepients = obj["watchers"];
 	
 	resolveDir(contentObj,directory);
 	
@@ -51,6 +52,8 @@ fs.readFile(jsonFile,function(err,data){
 			resultsString += oneMissingKeyword + "\r\n";
 		}
 		
+		//put a timestamp on the file name
+		resultsFile += "_" + Date.now().toString() + ".txt";
 		fs.writeFile(resultsFile,resultsString,function(err){
 			if (err){
 				return console.log(err);
@@ -59,7 +62,7 @@ fs.readFile(jsonFile,function(err,data){
 			console.log("Write to "+resultsFile+" complete. ");
 		});
 		
-		sendMail(resultsString);
+		sendMail(resultsString,recepients);
 		
 	},3000);
 });
@@ -81,38 +84,44 @@ function resolveDir(jsonDir,dirInput){
 				resolveDir(jsonDir[oneFile],path.resolve(dirInput,oneFile));
 			}
 			else if (jsonDir[oneFile]["type"]=="file"){
-				var stringIn = "";
-				fs.readFile(path.resolve(dirInput,oneFile),function(error,dataIn){
-					stringIn += dataIn;
-					var keywords = jsonDir[oneFile]["keywords"];
-					
-					for (var oneKeyword of keywords){
-						if (stringIn.includes(oneKeyword)){
-							keywordsResults.push("\""+oneKeyword+"\""+" is in "+path.resolve(dirInput,oneFile));
-						}
-						else {
-							keywordsMissingResults.push("\""+oneKeyword+"\""+" is not in "+path.resolve(dirInput,oneFile));
-						}
-					}
-				});
+				findKeywords(jsonDir,dirInput,oneFile);
 			}
 		}
 		
 	});
 }
 
-function sendMail(textMail){
+function findKeywords(jsonDir,dirInput,oneFile){
+	var stringIn = "";
+	fs.readFile(path.resolve(dirInput,oneFile),function(error,dataIn){
+		stringIn += dataIn;
+		var keywords = jsonDir[oneFile]["keywords"];
+		
+		for (var oneKeyword of keywords){
+			if (stringIn.includes(oneKeyword)){
+				keywordsResults.push("\""+oneKeyword+"\""+" is in "+path.resolve(dirInput,oneFile));
+			}
+			else {
+				keywordsMissingResults.push("\""+oneKeyword+"\""+" is not in "+path.resolve(dirInput,oneFile));
+			}
+		}
+	});
+}
+
+function sendMail(textMail,recepients){
+	
 	var transporter = nodemailer.createTransport({
-	    host: 'hotmail',
+	    host: process.env.host,
+	    port: process.env.port
 		auth: {
-		    user: '<user>@hotmail.com',
-		    pass: '<password>'
+		    user: process.env.senderAddress,
+		    pass: process.env.password
 		  }
 		});
 
 	var mailOptions = {
-	  from: '<sender>',
-	  to: '<recepient>',
+	  from: process.env.senderAddress,
+	  to: recepients.toString(),
 	  subject: 'Test Results',
 	  text: textMail
 	};

@@ -1,5 +1,8 @@
 {
-	"results":"./results.txt",
+	"results":"./results",
+	"watchers":[
+		"nicholasngchuxu@gmail.com"
+		],
 	"dir":"/Users/wanaccess/someDir",
 	"dirSchema":{
 		"dir1":{
