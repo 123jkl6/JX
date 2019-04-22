@@ -112,7 +112,7 @@ function sendMail(textMail,recepients){
 	
 	var transporter = nodemailer.createTransport({
 	    host: process.env.host,
-	    port: process.env.port
+	    port: process.env.port,
 		auth: {
 		    user: process.env.senderAddress,
 		    pass: process.env.password
