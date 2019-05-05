@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-function sendMail(textMail,recepients){
+function sendMail(textMail,attachments,recepients){
 	
 	var transporter = nodemailer.createTransport({
 	    host: process.env.host,
@@ -15,7 +15,8 @@ function sendMail(textMail,recepients){
 	  from: process.env.senderAddress,
 	  to: recepients.toString(),
 	  subject: 'Test Results',
-	  text: textMail
+	  text: textMail,
+	  attachments:attachments,
 	};
 
 	transporter.sendMail(mailOptions, function(error, info){

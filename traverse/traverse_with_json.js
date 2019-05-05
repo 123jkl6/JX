@@ -3,6 +3,7 @@ const path = require('path');
 const sendMail = require('../email/email');
 
 //var jsonFile = "/Users/wanaccess/eclipse-workspace/node_examples/sample.json";
+const standardMessage = "A policy is in place to notify you of the test results.";
 var directory = "";
 var content = "";
 var missingFiles = [];
@@ -10,13 +11,13 @@ var keywordsResults = [];
 var keywordsMissingResults = [];
 
 function traverse_with_json(jsonFile){
+	
 	fs.readFile(jsonFile,function(err,data){
 		if (err){
 			throw err;
 		}
 		
 		content += data;
-		
 		var obj = JSON.parse(content);
 		console.log(obj);
 		
@@ -35,22 +36,22 @@ function traverse_with_json(jsonFile){
 			console.log("----------Missing Keywords-----------");
 			console.log(keywordsMissingResults);
 			
-			var resultsString = "--------------Missing Files---------------\r\n";
+			//use \r\n for new lines in Windows
 			
+			var resultsString = "--------------Missing Files---------------\r\n";
 			for (var oneFile of missingFiles){
 				resultsString += oneFile + "\r\n";
-			}
-			
-			resultsString += "\r\n---------------Keywords---------------\r\n";
-			
-			for (var oneKeyword of keywordsResults){
-				resultsString += oneKeyword + "\r\n";
 			}
 			
 			resultsString += "\r\n---------------Missing keywords---------------\r\n";
 			
 			for (var oneMissingKeyword of keywordsMissingResults){
 				resultsString += oneMissingKeyword + "\r\n";
+			}
+			
+			resultsString += "\r\n---------------Keywords---------------\r\n";
+			for (var oneKeyword of keywordsResults){
+				resultsString += oneKeyword + "\r\n";
 			}
 			
 			//put a timestamp on the file name
@@ -63,7 +64,18 @@ function traverse_with_json(jsonFile){
 				console.log("Write to "+resultsFile+" complete. ");
 			});
 			
-			sendMail(resultsString,recepients);
+			//clean up resultsFile
+			var emailResultsFile = resultsFile.replace("./","");
+			console.log(emailResultsFile);
+			//make attachments array to send over, just one attachment
+			var attachments = [
+				{
+					filename:resultsFile,
+					content:resultsString,
+				}
+			];
+			
+			sendMail(standardMessage,attachments,recepients);
 			
 		},3000);
 	});	
