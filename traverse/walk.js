@@ -25,9 +25,9 @@ const walk = function(dir, done) {
 };
 
 //call function to demo
-walk(process.env.HOME,function(err,results){
-    if (err) throw err;
-    console.log(results);
-});
+// walk(process.env.HOME,function(err,results){
+//     if (err) throw err;
+//     console.log(results);
+// });
 
 module.exports = walk;
