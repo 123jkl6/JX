@@ -1,0 +1,42 @@
+{
+	"results":"./results",
+	"watchers":[
+		"nicholasngchuxu@gmail.com"
+		],
+	"dir":"/Users/wanaccess/someDir",
+	"dirSchema":{
+		"dir1":{
+			"type":"directory",
+			"sample.txt":{
+				"type":"file",
+				"keywords":[
+					"lmao"
+					]
+			}
+		},
+		"dir2":{
+			"type":"directory",
+			"dir":{
+				"type":"directory"
+			},
+			"anothetDir":{
+				"type":"directory"
+			},
+			"sample.txt":{
+				"type":"file",
+				"keywords":[
+					"hehe"
+					]
+				}
+		},
+		"dir3":{
+			"type":"directory"
+		},
+		"sample.txt": {
+			"type":"file",
+			"keywords":[
+				"hoho"
+			]
+		}
+	}
+}
