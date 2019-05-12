@@ -5,25 +5,25 @@
 		],
 	"check":[
 		{
-			"relPath":"./someDir/sample.txt",
+			"relPath":"/someDir/sample.txt",
 			"keywords":[
 				"hoho"
 			]
 		},
 		{
-			"relPath":"./someDir/dir1/sample.txt",
+			"relPath":"/someDir/dir1/sample.txt",
 			"keywords":[
 				"lmao"
 			]
 		},
 		{
-			"relPath":"./someDir/dir2/sample.txt",
+			"relPath":"/someDir/dir2/sample.txt",
 			"keywords":[
 				"hehe"
 			]
 		},
 		{
-			"relPath":"./someDir/dir2/doesnotexist.txt",
+			"relPath":"/someDir/dir2/doesnotexist.txt",
 			"keywords":[
 				"hehe"
 			]
