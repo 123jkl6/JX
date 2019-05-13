@@ -62,7 +62,11 @@ async function runCheck(check, jsonFile, resultsFile, recepients, scanResults) {
                 continue;
             }
 
-            if (result.endsWith(relPath)) {
+            //replace forward slash with backslash.
+			var windowsRelPath = relPath.replace(/\//g,'\\');
+			//console.log(windowsRelPath);
+
+            if (result.endsWith(relPath) || result.endsWith(windowsRelPath)) {
                 //found the file
                 foundFileFlag=true;
                 await findKeywords(result).then(function (stringIn) {
